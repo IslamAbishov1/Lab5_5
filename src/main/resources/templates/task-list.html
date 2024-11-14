@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<body>
+<h2>Your Tasks</h2>
+<ul>
+  <li th:each="task : ${tasks}">
+    <p th:text="${task.title}">Task Title</p>
+    <p th:text="${task.dueDate}">Due Date</p>
+  </li>
+</ul>
+<a href="/tasks/new">Add New Task</a>
+</body>
+</html>

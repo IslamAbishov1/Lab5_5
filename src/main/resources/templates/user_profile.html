@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+</head>
+<body>
+<h2>User Profile</h2>
+<p>ID: <span th:text="${user.id}"></span></p>
+<p>Username: <span th:text="${user.username}"></span></p>
+<p>Creation Date: <span th:text="${user.creationDate}"></span></p>
+<a href="/users">Back to User List</a>
+</body>
+</html>

@@ -22,5 +22,4 @@ public class UserController {
         model.addAttribute("totalPages", userService.getAllUsers(PageRequest.of(page, 10)).getTotalPages());
         return "user-list";
     }
-
 }

@@ -7,6 +7,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import service.CategoryService;
 
+import java.util.Optional;
+
 @Controller
 @RequestMapping("/categories")
 public class CategoryController {
@@ -38,9 +40,14 @@ public class CategoryController {
 
     @GetMapping("/edit/{id}")
     public String showEditCategoryForm(@PathVariable Long id, Model model) {
-        Category category = categoryService.getCategoryById(id);
-        model.addAttribute("category", category);
-        return "edit-category";
+        Optional<Category> optionalCategory = categoryService.getCategoryById(id);
+
+        if (optionalCategory.isPresent()) {
+            model.addAttribute("category", optionalCategory.get());
+            return "edit-category";
+        } else {
+            return "redirect:/categories?error=CategoryNotFound";
+        }
     }
 
     @PostMapping("/edit/{id}")

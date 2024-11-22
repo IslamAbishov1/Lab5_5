@@ -3,45 +3,25 @@ package service;
 import entity.Task;
 import entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import repository.TaskRepository;
 
-import java.util.List;
-
 @Service
 public class TaskService {
-
-    private final TaskRepository taskRepository;
-
     @Autowired
-    public TaskService(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+    private TaskRepository taskRepository;
+
+    public Page<Task> getTasksByUser(User user, Pageable pageable) {
+        return taskRepository.findByUser(user, pageable);
     }
 
-    public List<Task> getTasksByUser(User user) {
-        return taskRepository.findByUser(user);
+    public Page<Task> searchTasks(User user, String title, Pageable pageable) {
+        return taskRepository.findByUserAndTitleContaining(user, title, pageable);
     }
 
-    public Task getTaskById(Long id) {
-        return taskRepository.findById(id).orElse(null);
-    }
-
-    public Task saveTask(Task task) {
-        return taskRepository.save(task);
-    }
-
-    public Task updateTask(Long id, Task updatedTask) {
-        Task task = taskRepository.findById(id).orElseThrow();
-        task.setTitle(updatedTask.getTitle());
-        task.setDescription(updatedTask.getDescription());
-        task.setDueDate(updatedTask.getDueDate());
-        task.setStatus(updatedTask.getStatus());
-        task.setPriority(updatedTask.getPriority());
-        task.setCategory(updatedTask.getCategory());
-        return taskRepository.save(task);
-    }
-
-    public void deleteTask(Long id) {
-        taskRepository.deleteById(id);
+    public Page<Task> filterTasksByCategory(User user, Long categoryId, Pageable pageable) {
+        return taskRepository.findByUserAndCategoryId(user, categoryId, pageable);
     }
 }

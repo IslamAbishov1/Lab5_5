@@ -1,13 +1,41 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tasks</title>
+</head>
 <body>
 <h2>Your Tasks</h2>
-<ul>
-  <li th:each="task : ${tasks}">
-    <p th:text="${task.title}">Task Title</p>
-    <p th:text="${task.dueDate}">Due Date</p>
-  </li>
-</ul>
-<a href="/tasks/new">Add New Task</a>
+<form method="get">
+  <input type="text" name="search" placeholder="Search by title">
+  <select name="categoryId">
+    <option value="">All Categories</option>
+    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+  </select>
+  <button type="submit">Filter</button>
+</form>
+<table border="1">
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Due Date</th>
+    <th>Actions</th>
+  </tr>
+  <tr th:each="task : ${tasks}">
+    <td th:text="${task.title}"></td>
+    <td th:text="${task.description}"></td>
+    <td th:text="${task.dueDate}"></td>
+    <td>
+      <a th:href="@{'/tasks/edit/' + ${task.id}}">Edit</a>
+      <a th:href="@{'/tasks/delete/' + ${task.id}}">Delete</a>
+    </td>
+  </tr>
+</table>
+<div>
+  <a th:each="page : ${#numbers.sequence(0, totalPages - 1)}"
+     th:href="@{'/tasks?page=' + ${page}}"
+     th:text="${page + 1}"></a>
+</div>
+<a href="/tasks/add">Add New Task</a>
 </body>
 </html>

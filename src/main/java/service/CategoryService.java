@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import repository.CategoryRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryService {
@@ -21,8 +22,8 @@ public class CategoryService {
         return categoryRepository.findAll();
     }
 
-    public Category getCategoryById(Long id) {
-        return categoryRepository.findById(id).orElse(null);
+    public Optional<Category> getCategoryById(Long id) {
+        return categoryRepository.findById(id);
     }
 
     public Category saveCategory(Category category) {
@@ -30,7 +31,8 @@ public class CategoryService {
     }
 
     public Category updateCategory(Long id, Category updatedCategory) {
-        Category category = categoryRepository.findById(id).orElseThrow();
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Category not found with id: " + id));
         category.setName(updatedCategory.getName());
         return categoryRepository.save(category);
     }
